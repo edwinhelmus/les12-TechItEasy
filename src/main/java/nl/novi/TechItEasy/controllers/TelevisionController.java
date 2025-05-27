@@ -5,45 +5,43 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.ArrayList;
 
 @RestController
 public class TelevisionController {
 
+    ArrayList<String> televisionDataBase = new ArrayList<>();
+
     @GetMapping("/televisions")
     public ResponseEntity<Object> televisions() {
-        return ResponseEntity.ok("televisions");
+        return ResponseEntity.ok(televisionDataBase.toString());
     }
 
     @GetMapping("/televisions/{id}")
-    public ResponseEntity<Object> televisions(@PathVariable long id) {
-        if (id != 0) {
-            return ResponseEntity.ok("Television ID: " + id);
+    public ResponseEntity<Object> televisions(@PathVariable int id) {
+        if (televisionDataBase.get(id) != null) {
+            return ResponseEntity.ok(televisionDataBase.get(id));
         } else {
-            throw new RecordNotFoundException("ID not found");
+            return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping("/television")
     public ResponseEntity<Object> addTelevision(@RequestBody String title) {
-        return ResponseEntity.created(null).body("Television: "+ title);
+        televisionDataBase.add(title);
+        return ResponseEntity.created(null).body("Television id: " + (televisionDataBase.size() - 1));
     }
 
     @PutMapping("/television/{id}")
-    public ResponseEntity<Object> updateTelevision(@PathVariable long id, @RequestBody String title) {
-        if (id != 0) {
-            return ResponseEntity.noContent().build();
-        } else {
-            throw new RecordNotFoundException("ID not found");
-        }
+    public ResponseEntity<Object> updateTelevision(@PathVariable int id, @RequestBody String title) {
+        televisionDataBase.set(id, title);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/television/{id}")
-    public ResponseEntity<Object> deleteTelevision(@PathVariable long id) {
-        if (id != 0) {
-            return ResponseEntity.noContent().build();
-        } else {
-            throw new RecordNotFoundException("ID not found");
-        }
+    public ResponseEntity<Object> deleteTelevision(@PathVariable int id) {
+        televisionDataBase.set(id, null);
+        return ResponseEntity.noContent().build();
     }
 }
 
