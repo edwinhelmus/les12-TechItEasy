@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 @RestController
+@RequestMapping("/televisions")
 public class TelevisionController {
 
     private List<String> televisionDataBase;
@@ -16,12 +17,12 @@ public class TelevisionController {
         televisionDataBase = new ArrayList<>();
     }
 
-    @GetMapping("/televisions")
+    @GetMapping
     public ResponseEntity<Object> televisions() {
         return ResponseEntity.ok(televisionDataBase.toString());
     }
 
-    @GetMapping("/televisions/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Object> televisions(@PathVariable int id) {
         String television;
         try {
@@ -38,7 +39,7 @@ public class TelevisionController {
         }
     }
 
-    @PostMapping("/television")
+    @PostMapping
     public ResponseEntity<Object> addTelevision(@RequestBody String title) {
 
         if (title.length() > 20) {
@@ -50,7 +51,7 @@ public class TelevisionController {
         return ResponseEntity.created(null).body("Television id: " + (televisionDataBase.size()));
     }
 
-    @PutMapping("/television/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Object> updateTelevision(@PathVariable int id, @RequestBody String title) {
         try {
             televisionDataBase.set(--id, title);
@@ -62,7 +63,7 @@ public class TelevisionController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/television/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteTelevision(@PathVariable int id) {
         try {
             televisionDataBase.set(--id, null);
