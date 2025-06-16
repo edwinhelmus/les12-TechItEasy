@@ -7,7 +7,6 @@ import jakarta.persistence.*;
 public class Television {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     String type;
